@@ -3,7 +3,7 @@
   "version": "1.0.4",
   "description": "Vercel-GitHub integration tool via MCP",
   "bin": {
-    "your-command-name": "./bin/cli.js"
+    "your-command-name": "bin/cli.js"
   },
   "scripts": {
     "start": "node src/index.js",
