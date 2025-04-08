@@ -9,6 +9,7 @@
     "start": "node src/index.js",
     "dev": "node bin/cli.js"
   },
+  "main": "src/index.js",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
     "axios": "^1.6.2",
@@ -23,6 +24,6 @@
     "github",
     "mcp"
   ],
-  "author": "Your Name",
+  "author": "mimimi",
   "license": "MIT"
 }
