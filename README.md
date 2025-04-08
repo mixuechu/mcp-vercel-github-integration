@@ -1,147 +1,114 @@
-# MCP Vercel GitHub Integration
+# GitHub-Vercel MCP Server
 
-这是一个基于 MCP (Model Control Protocol) 的 Vercel 和 GitHub 集成工具。它提供了自动化创建 GitHub 仓库并配置 Vercel 部署的功能。
+Automated GitHub repository creation and Vercel template deployment as an MCP service.
 
-## 功能特性
+## Features
 
-- 自动创建 GitHub 仓库
-- 自动推送模板代码到仓库
-- 自动配置 Vercel 项目集成
-- 支持团队和个人账户
-- 支持自定义模板源
+- 🚀 **Auto-detection** of GitHub namespace from token
+- 🤖 **Team-aware** Vercel operations
+- ⚡ **Zero-config** for most use cases
+- 🔒 **Secure** credential handling
 
-## 安装要求
-
-- Node.js
-- npm 或 yarn
-- Vercel 账户
-- GitHub 账户
-
-## 安装
+## Installation
 
 ```bash
-npm install -g mcp-vercel-github-integration
+npm install -g @yourpackage/mcp-server-github
 ```
 
-## MCP 服务器配置
+## MCP Configuration
 
-在你的 MCP 配置文件中（通常位于 `~/.cursor/mcp.json`）添加以下配置：
+Add to your `mcp.config.json`:
 
 ```json
 {
   "mcpServers": {
-    "vercel-github": {
+    "github": {
       "command": "npx",
-      "args": [
-        "mcp-vercel-github-integration"
-      ],
+      "args": ["@yourpackage/mcp-server-github"],
       "env": {
-        "VERCEL_API_KEY": "<YOUR_VERCEL_API_KEY>",
-        "GITHUB_API_KEY": "<YOUR_GITHUB_API_KEY>",
-        "GITHUB_NAMESPACE": "<YOUR_GITHUB_NAMESPACE>"
+        "VERCEL_API_KEY": "your_vercel_api_token",
+        "GITHUB_TOKEN": "your_github_personal_access_token"
       }
     }
   }
 }
 ```
 
-### 配置说明
+## Required Permissions
 
-- `command`: 使用 `npx` 来运行已安装的包
-- `args`: 指定要运行的包名
-- `env`: 环境变量配置
-  - `VERCEL_API_KEY`: Vercel API 密钥
-  - `GITHUB_API_KEY`: GitHub API 密钥
-  - `GITHUB_NAMESPACE`: GitHub 用户名或组织名
-
-## 配置
-
-使用此工具需要以下配置项：
-
-- `VERCEL_API_KEY`: Vercel API 密钥
-- `GITHUB_API_KEY`: GitHub API 密钥
-- `GITHUB_NAMESPACE`: GitHub 用户名或组织名
-
-## 使用方法
-
-### 命令行参数
-
-```bash
-mcp-vercel-github-integration \
-  --VERCEL_API_KEY="your_vercel_api_key" \
-  --GITHUB_API_KEY="your_github_api_key" \
-  --GITHUB_NAMESPACE="your_github_username" \
-  --repoName="your_repo_name" \
-  --templateSource="template_source_url"
+### GitHub Token
+```yaml
+repo:       # Full repository control
+user:       # Read user profile
+read:org    # If using organizations
 ```
 
-### 参数说明
+### Vercel Token
+- `projects:read` and `projects:write`
+- `teams:read` (if using teams)
 
-- `--VERCEL_API_KEY`: (必需) Vercel API 密钥
-- `--GITHUB_API_KEY`: (必需) GitHub API 密钥
-- `--GITHUB_NAMESPACE`: (必需) GitHub 用户名或组织名
-- `--repoName`: (可选) 仓库名称，默认为 'scene-order-table'
-- `--templateSource`: (可选) 模板源 URL，默认为 'https://github.com/vercel/vercel/tree/main/examples/nextjs'
+## Usage
 
-### 示例
-
+### Basic Deployment
 ```bash
-mcp-vercel-github-integration \
-  --VERCEL_API_KEY="xxxxxxxx" \
-  --GITHUB_API_KEY="xxxxxxxx" \
-  --GITHUB_NAMESPACE="myusername" \
-  --repoName="my-nextjs-project"
+mcp execute github --REPO_NAME "my-app" --TEMPLATE_SOURCE "https://github.com/vercel/vercel/tree/main/examples/nextjs"
 ```
 
-## 工作流程
+### All Parameters
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `VERCEL_API_KEY` | - | (Required) Vercel API key |
+| `GITHUB_TOKEN` | - | (Required) GitHub personal access token |
+| `REPO_NAME` | "new-repo" | Repository name |
+| `TEMPLATE_SOURCE` | Vercel Next.js | Template Git URL |
+| `IS_PRIVATE` | true | Make repository private |
 
-1. 检查并获取团队 ID（如果存在）
-2. 创建新的 GitHub 仓库
-3. 推送模板代码到仓库
-4. 配置 Vercel 项目集成
-
-## 开发
-
-### 依赖项
-
+## API Response
+Successful execution returns:
 ```json
 {
-  "dependencies": {
-    "axios": "^0.26.1"
+  "status": "success",
+  "data": {
+    "githubRepo": "https://github.com/yourname/repo",
+    "vercelProject": "https://repo.vercel.app",
+    "projectId": "prj_abc123"
   }
 }
 ```
 
-### 本地开发
-
-1. 克隆仓库
-2. 安装依赖：
-```bash
-npm install
+## Error Handling
+Common error responses include:
+```json
+{
+  "status": "error",
+  "error": {
+    "code": "GITHUB_AUTH_FAILED",
+    "message": "Invalid GitHub token"
+  }
+}
 ```
-3. 运行开发环境：
+
+## Development
+
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Set up environment:
+   ```bash
+   cp .env.example .env
+   ```
+4. Run tests:
+   ```bash
+   npm test
+   ```
+
+## Deployment
+Package and publish to npm:
 ```bash
-npm start
+npm publish --access public
 ```
 
-## 错误处理
-
-工具包含完整的错误处理机制：
-- API 调用错误处理
-- 参数验证
-- 团队 ID 获取失败处理
-- 项目创建失败处理
-
-## 安全提示
-
-- 请妥善保管你的 API 密钥
-- 建议设置适当的 API 权限范围
-- 不要在公共环境中暴露配置信息
-
-## 贡献
-
-欢迎提交问题和合并请求。这个项目处于积极开发中，我们欢迎任何形式的贡献。
-
-## 许可证
-
-MIT 
+## License
+MIT
