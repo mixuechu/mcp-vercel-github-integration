@@ -1,0 +1,45 @@
+# 依赖目录
+node_modules/
+dist/
+.build/
+
+# 环境变量文件
+.env
+.env.local
+.env.*.local
+
+# 日志文件
+*.log
+logs/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# IDE/编辑器目录
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 测试覆盖率
+coverage/
+.nyc_output/
+
+# 调试文件
+debug.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 临时文件
+tmp/
+temp/
+
+# macOS 系统文件
+._*
+
+# 其他
+*.bak
+*.patch
+*.diff
