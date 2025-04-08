@@ -1,5 +1,5 @@
 {
-  "name": "your-package-name",
+  "name": "mcp-vercel-github-integration",
   "version": "1.0.3",
   "description": "Vercel-GitHub integration tool via MCP",
   "bin": {
