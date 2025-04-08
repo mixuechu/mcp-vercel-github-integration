@@ -1,3 +1,6 @@
+#!/usr/bin/env node
+
+
 const { Server } = require('@modelcontextprotocol/sdk/server');
 const axios = require('axios');
 
