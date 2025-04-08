@@ -10,6 +10,6 @@
     "axios": "^0.26.1"
   },
   "bin": {
-    "mcp-vercel-integration": "./index.js"
+    "mcp-vercel-integration": "index.js"
   }
 }
