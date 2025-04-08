@@ -20,6 +20,27 @@ function parseArgs() {
   return params;
 }
 
+// Function to get default team ID
+async function getDefaultTeamId(VERCEL_API_KEY) {
+  const url = "https://api.vercel.com/v2/teams";
+  const headers = {
+    "accept": "*/*",
+    "content-type": "application/json; charset=utf-8",
+    "authorization": `Bearer ${VERCEL_API_KEY}`
+  };
+
+  try {
+    const response = await axios.get(url, { headers });
+    if (response.data && response.data.teams && response.data.teams.length > 0) {
+      return response.data.teams[0].id; // Return first team's ID
+    }
+    return null; // No teams found (personal account)
+  } catch (error) {
+    console.error("Error fetching teams:", error);
+    return error.response ? error.response.data : error.message;
+  }
+}
+
 // Function to create GitHub repository
 async function createGithubRepo(VERCEL_API_KEY, GITHUB_NAMESPACE, repoName, private = true) {
   const url = "https://vercel.com/api/v1/integrations/git-repo";
@@ -47,7 +68,7 @@ async function createGithubRepo(VERCEL_API_KEY, GITHUB_NAMESPACE, repoName, priv
 
 // Function to push template to the repository
 async function pushToRepo(VERCEL_API_KEY, TEAM_ID, GITHUB_NAMESPACE, repoName, templateSource) {
-  const url = `https://vercel.com/api/v1/integrations/push-to-repo?teamId=${TEAM_ID}`;
+  const url = `https://vercel.com/api/v1/integrations/push-to-repo${TEAM_ID ? `?teamId=${TEAM_ID}` : ''}`;
   const data = {
     type: "github",
     source: templateSource,
@@ -72,7 +93,7 @@ async function pushToRepo(VERCEL_API_KEY, TEAM_ID, GITHUB_NAMESPACE, repoName, t
 
 // Function to configure project integration
 async function configureProjectIntegration(VERCEL_API_KEY, TEAM_ID, projectId) {
-  const url = `https://vercel.com/api/v4/projects/${projectId}/integrations?teamId=${TEAM_ID}`;
+  const url = `https://vercel.com/api/v4/projects/${projectId}/integrations${TEAM_ID ? `?teamId=${TEAM_ID}` : ''}`;
   const headers = {
     "accept": "*/*",
     "content-type": "application/json; charset=utf-8",
@@ -95,13 +116,20 @@ async function main() {
   const VERCEL_API_KEY = params.VERCEL_API_KEY;
   const GITHUB_API_KEY = params.GITHUB_API_KEY;
   const GITHUB_NAMESPACE = params.GITHUB_NAMESPACE;
-  const TEAM_ID = params.TEAM_ID;
   const repoName = params.repoName || 'scene-order-table'; // Default to 'scene-order-table' if not provided
   const templateSource = params.templateSource || "https://github.com/vercel/vercel/tree/main/examples/nextjs";
 
-  if (!VERCEL_API_KEY || !GITHUB_API_KEY || !GITHUB_NAMESPACE || !TEAM_ID) {
-    console.error("Missing required parameters. Please provide VERCEL_API_KEY, GITHUB_API_KEY, GITHUB_NAMESPACE, TEAM_ID.");
+  if (!VERCEL_API_KEY || !GITHUB_API_KEY || !GITHUB_NAMESPACE) {
+    console.error("Missing required parameters. Please provide VERCEL_API_KEY, GITHUB_API_KEY, and GITHUB_NAMESPACE.");
     process.exit(1);
+  }
+
+  // Get default team ID automatically
+  const TEAM_ID = await getDefaultTeamId(VERCEL_API_KEY);
+  if (TEAM_ID === null) {
+    console.log("No team found - using personal account");
+  } else {
+    console.log(`Using team ID: ${TEAM_ID}`);
   }
 
   // 1. Create GitHub repo
