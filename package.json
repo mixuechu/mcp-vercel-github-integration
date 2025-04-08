@@ -1,16 +1,24 @@
 {
-  "name": "mcp-vercel-github-integration",
-  "version": "1.0.7",
-  "description": "MCP integration for Vercel and GitHub",
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js"
-  },
-  "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.9.0",
-    "axios": "^1.8.4"
-  },
+  "name": "your-package-name",
+  "version": "1.0.0",
+  "description": "Vercel-GitHub integration tool via MCP",
   "bin": {
-    "mcp-vercel-github-integration": "index.js"
-  }
+    "your-command-name": "./bin/cli.js"
+  },
+"scripts": {
+  "start": "node src/index.js",
+  "dev": "node bin/cli.js"
+},
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "axios": "^1.6.2",
+    "minimist": "^1.2.8",
+    "zod": "^3.22.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": ["vercel", "github", "mcp"],
+  "author": "Your Name",
+  "license": "MIT"
 }
