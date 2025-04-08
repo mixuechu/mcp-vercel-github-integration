@@ -1,6 +1,6 @@
 {
   "name": "your-package-name",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Vercel-GitHub integration tool via MCP",
   "bin": {
     "your-command-name": "./bin/cli.js"
