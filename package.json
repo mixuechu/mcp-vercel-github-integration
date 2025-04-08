@@ -1,6 +1,6 @@
 {
   "name": "mcp-vercel-github-integration",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "MCP integration for Vercel and GitHub",
   "main": "index.js",
   "scripts": {
