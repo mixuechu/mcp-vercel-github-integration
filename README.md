@@ -9,7 +9,7 @@ Automated GitHub repository creation and Vercel template deployment as an MCP se
 - ⚡ **Zero-config** for most use cases
 - 🔒 **Secure** credential handling
 
-## Installation
+## Local Installation
 
 ```bash
 npm install -g @yourpackage/mcp-server-github
@@ -22,13 +22,15 @@ Add to your `mcp.config.json`:
 ```json
 {
   "mcpServers": {
-    "github": {
-      "command": "npx",
-      "args": ["@yourpackage/mcp-server-github"],
-      "env": {
-        "VERCEL_API_KEY": "your_vercel_api_token",
-        "GITHUB_TOKEN": "your_github_personal_access_token"
-      }
+        "vercel-github": {
+          "command": "npx",
+          "args": [
+            "mcp-vercel-github-integration",
+            "-v",
+            "<Your Vercel API Key>",
+            "-g",
+            "<Your Git API Key>"
+          ]
     }
   }
 }
