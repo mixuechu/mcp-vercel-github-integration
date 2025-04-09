@@ -140,17 +140,6 @@ export async function runServer(vercelApiKey, githubToken) {
                     `├─ Template: ${templateSource}\n` +
                     `├─ Vercel Project ID: ${pushData.projectId}\n` +
                     `└─ Repository URL: ${repoData.url || repoData.id}`
-            },
-            {
-              type: "markdown",
-              text: `## Operation Successful\n` +
-                    `| Property          | Value                  |\n` +
-                    `|-------------------|------------------------|\n` +
-                    `| GitHub Namespace  | ${githubNamespace}     |\n` +
-                    `| Repository        | ${repoName}            |\n` +
-                    `| Visibility        | ${isPrivate ? "Private" : "Public"} |\n` +
-                    `| Vercel Project ID | ${pushData.projectId}  |\n\n` +
-                    `[View Repository](${repoData.url || `https://github.com/${githubNamespace}/${repoName}`})`
             }
           ],
           metadata: {
